@@ -1,0 +1,20 @@
+// making a fizzbuzz code
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	for i := 0; i < 20; i++ {
+		if i%3 == 0 && i%5 == 0 {
+			fmt.Println("fizz Buzz")
+		} else if i%3 == 0 {
+			fmt.Println("fizz")
+		} else if i%5 == 0 {
+			fmt.Println("buzz")
+		} else {
+			fmt.Println(i)
+		}
+	}
+}
