@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 var s string
@@ -32,6 +33,10 @@ func main() {
 	goString()
 
 	mapData()
+
+	// below is a class
+	newClass := Trade{"hello", 10, 99.88, true}
+	fmt.Println(newClass)
 
 	fmt.Printf("result: %v, type of %T\n", mean, mean)
 }
@@ -137,4 +142,65 @@ func mapData() {
 		fmt.Printf("%s -> %.2f\n", key, value)
 
 	}
+}
+
+func sqrt(n float64) (float64, error) {
+	if n < 0 {
+		return 0.0, fmt.Errorf("sqrt of negative value (%f)", n)
+	}
+	return math.Sqrt(n), nil
+}
+
+func findingErr() {
+	s1, err := sqrt(2.0)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+	} else {
+		fmt.Println(s1)
+	}
+
+	s2, err := sqrt(-2.0)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+	} else {
+		fmt.Println(s2)
+	}
+}
+
+// working with classes in go as classes are defined as struct here
+type Trade struct {
+	Symbol string
+	Volume int
+	Price  float64
+	Buy    bool
+}
+
+// Value returns the trade value __ using methods with struct
+func (t *Trade) Value() float64 {
+	value := float64(t.Volume) * t.Price
+	if t.Buy {
+		value = -value
+	}
+	return value
+}
+
+// NewTrade will create a new Trade and will validate the input
+func NewTrade(symbol string,
+	volume int,
+	price float64,
+	buy bool) (*Trade, error) {
+	if symbol == "" {
+		return nil, fmt.Errorf("symbol cannot be Empty ")
+	}
+	if volume <= 0 {
+		return nil, fmt.Errorf("Volume must be >= 0 (was %d)", volume)
+	}
+	if price <= 0.0 {
+		return nil, fmt.Errorf("price must be >= 0 (was %f)", price)
+	}
+
+	trade := &Trade{
+		Symbol: symbol, Volume: volume, Price: price, Buy: buy,
+	}
+	return trade, nil
 }
